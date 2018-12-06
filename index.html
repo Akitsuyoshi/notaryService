@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Star Notary</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+
+        <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>Star Notary</h1>
+
+            <form id="create">
+                Name:<br>
+                <input type="text" name="name"><br>
+                StarStory:<br>
+                <input type="text" name="starStory"><br>
+                Dec:<br>
+                <input type="text" name="dec"><br>
+                Mag:<br>
+                <input type="text" name="mag"><br>
+                Cent:<br>
+                <input type="text" name="cent"><br>
+                <input type="submit"><br>
+            </form>
+
+            <div class="row">
+                <label class="bold">Star Name:</label>
+                <label id="star-name"></label>
+            </div>
+
+            <div class="row">
+                <label class="bold">Star Owner:</label>
+                <label id="star-owner"></label>
+            </div>
+
+            <button id="claim-button" onclick="claimButtonClicked()">Claim Star</button>
+        </div>
+
+    <script src="./contractInterface.js"></script>
+    <script src="./index.js"></script>
+    </body>
+</html>

@@ -24,20 +24,26 @@
                 <input type="text" name="mag"><br>
                 Cent:<br>
                 <input type="text" name="cent"><br>
-                <input type="submit"><br>
+                tokenId:<br>
+                <input type="text" name="id"><br>
+                <button type="submit" form="create" id="create-button">Create Star</button>
+            </form>
+
+            <form id="lookup">
+                Token ID:<br>
+                <input type="text" name="id"><br>
+                <button type="submit" form="lookup" id="lookup-button">Look up Star by ID</button>
             </form>
 
             <div class="row">
-                <label class="bold">Star Name:</label>
-                <label id="star-name"></label>
+                <label class="bold">Star Info:</label>
+                <label id="star-info"></label>
             </div>
 
             <div class="row">
                 <label class="bold">Star Owner:</label>
                 <label id="star-owner"></label>
             </div>
-
-            <button id="claim-button" onclick="claimButtonClicked()">Claim Star</button>
         </div>
 
     <script src="./contractInterface.js"></script>

@@ -14,34 +14,46 @@ const StarNotary = web3.eth.contract(contractInterface);
 const starNotary = StarNotary.at('0x5E079D3Aa3833F0393B5A1dE473F2435eCe03548');
 const params = { from: web3.eth.defaultAccount, gas: 250000 };
 
-async function claimButtonClicked() {
-    try {
-        console.log(web3);
-        const starClaimedEvent = await starNotary.buyStar(1, 0.1, params);
-        // I just call watch event without await, but maybe later we need to add it?
-        starClaimedEvent.watch().then(() => location.reload()).catch(() => console.log('watching for star claimed event is failing'));
-    } catch (error) {
-        console.log(error);
-    }
+const wrapper = (cba) => {
+    return new Promise((resolve) => resolve(cba));
 }
 
-async function createButtonClicked(e) {
-    e.preventDefault();
-    const form = e.target;
-    console.log("create is invoked");
+async function lookupButtonClicked() {
+    const form = document.forms[1];
+    const id = form.elements.id.value;
+    starNotary.tokenIdToStarInfo.call(id, (err, hash) => {
+        if (err) console.log(err);
+        document.getElementById("star-info").textContent = hash;
+    });
+
+    starNotary.ownerOf.call(id, (err, hash) => {
+        if (err) console.log(err);
+        document.getElementById("star-owner").textContent = hash;
+    });
+}
+
+async function createButtonClicked() {
+    const form = document.forms[0];
     try {
         const account = web3.eth.defaultAccount;
         // TODO: we need to pass the args later into createStar and putStarUpForSale
-        const { name, starStory, dec, mag, cent } = form;
-        const createStar = await starNotary.createStar(name, starStory, cent, dec, mag, 1, params);
-        const starPutSaleEvent = await starNotary.putStarUpForSale(1, 0.1, params);
-        // I just call watch event without await, but maybe later we need to add it?
-        starPutSaleEvent.watch().then(() => location.reload()).catch(() => console.log('watching for star create event is failing'));
+        const { name, starStory, dec, mag, cent, id } = form.elements;
+        const createStar = await starNotary.createStar.sendTransaction(name.value, starStory.value, cent.value, dec.value, mag.value, id.value, function(err, hash) {
+            if (err) console.log(err);
+            console.log(hash);
+        });
+        console.log(createStar);
     } catch (error) {
         console.log(error);
     }
 }
 
-document.getElementById('create').addEventListener('submit', (e) => {
-    createButtonClicked(e);
-})
+document.forms[0].addEventListener('submit', (e) => {
+    e.preventDefault();
+    createButtonClicked();
+});
+
+document.forms[1].addEventListener('submit', (e) => {
+    e.preventDefault();
+    lookupButtonClicked();
+});
